@@ -1,957 +1,1018 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="id">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Sistem Akademik Sederhana</title>
-        <script src="https://cdn.tailwindcss.com"></script>
-        <script src="https://unpkg.com/@phosphor-icons/web"></script>
-        <style>
-            body {
-                font-family: "Inter", sans-serif;
-            }
-            .no-scrollbar::-webkit-scrollbar {
-                display: none;
-            }
-            .no-scrollbar {
-                -ms-overflow-style: none;
-                scrollbar-width: none;
-            }
-            [data-page] {
-                transition:
-                    opacity 0.3s ease-in-out,
-                    transform 0.3s ease-in-out;
-            }
-            .page-hidden {
-                opacity: 0;
-                transform: translateY(10px);
-                display: none;
-            }
-            .modal-overlay {
-                transition: opacity 0.2s ease-in-out;
-            }
-            .modal-content {
-                transition: transform 0.2s ease-in-out;
-            }
-            /* Perbaikan untuk ikon agar tidak mengganggu klik */
-            .ph,
-            .ph-bold,
-            .ph-fill,
-            .ph-light,
-            .ph-thin,
-            .ph-duotone {
-                pointer-events: none;
-            }
-        </style>
-    </head>
-    <body class="bg-gray-100">
-        <div class="flex h-screen bg-gray-200">
-            <!-- Sidebar -->
-            <div
-                id="sidebar"
-                class="fixed inset-y-0 left-0 w-64 bg-gray-800 text-white p-6 transform -translate-x-full md:relative md:translate-x-0 transition-transform duration-300 ease-in-out z-30"
-            >
-                <div class="flex items-center space-x-3 mb-10">
-                    <i class="ph ph-student text-3xl text-blue-400"></i>
-                    <h2 class="text-2xl font-bold">SI-Akademik</h2>
-                </div>
-                <nav>
-                    <a
-                        href="#dashboard"
-                        class="nav-link flex items-center py-3 px-4 my-2 rounded-lg bg-blue-600 hover:bg-blue-700 transition-colors"
-                        ><i class="ph-fill ph-house mr-3 text-lg"></i
-                        >Dashboard</a
-                    >
-                    <a
-                        href="#mahasiswa"
-                        class="nav-link flex items-center py-3 px-4 my-2 rounded-lg hover:bg-gray-700 transition-colors"
-                        ><i class="ph-fill ph-users mr-3 text-lg"></i
-                        >Mahasiswa</a
-                    >
-                    <a
-                        href="#dosen"
-                        class="nav-link flex items-center py-3 px-4 my-2 rounded-lg hover:bg-gray-700 transition-colors"
-                        ><i
-                            class="ph-fill ph-chalkboard-teacher mr-3 text-lg"
-                        ></i
-                        >Dosen</a
-                    >
-                    <a
-                        href="#matakuliah"
-                        class="nav-link flex items-center py-3 px-4 my-2 rounded-lg hover:bg-gray-700 transition-colors"
-                        ><i class="ph-fill ph-book-open mr-3 text-lg"></i>Mata
-                        Kuliah</a
-                    >
-                    <a
-                        href="#nilai"
-                        class="nav-link flex items-center py-3 px-4 my-2 rounded-lg hover:bg-gray-700 transition-colors"
-                        ><i class="ph-fill ph-exam mr-3 text-lg"></i>Nilai
-                        Mahasiswa</a
-                    >
-                </nav>
-            </div>
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Sistem Akademik Sederhana</title>
+		<script nonce="" src="https://cdn.tailwindcss.com"></script>
+		<script nonce src="https://unpkg.com/@phosphor-icons/web"></script>
+		<style nonce>
+			body {
+				font-family: 'Inter', sans-serif;
+			}
+			.no-scrollbar::-webkit-scrollbar {
+				display: none;
+			}
+			.no-scrollbar {
+				-ms-overflow-style: none;
+				scrollbar-width: none;
+			}
+			[data-page] {
+				transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+			}
+			.page-hidden {
+				opacity: 0;
+				transform: translateY(10px);
+				display: none;
+			}
+			.modal-overlay {
+				transition: opacity 0.2s ease-in-out;
+			}
+			.modal-content {
+				transition: transform 0.2s ease-in-out;
+			}
+			/* Perbaikan untuk ikon agar tidak mengganggu klik */
+			.ph,
+			.ph-bold,
+			.ph-fill,
+			.ph-light,
+			.ph-thin,
+			.ph-duotone {
+				pointer-events: none;
+			}
+		</style>
+	</head>
+	<body class="bg-gray-100">
+		<div class="flex h-screen bg-gray-200">
+			<!-- Sidebar -->
+			<div
+				id="sidebar"
+				class="fixed inset-y-0 left-0 w-64 bg-gray-800 text-white p-6 transform -translate-x-full md:relative md:translate-x-0 transition-transform duration-300 ease-in-out z-30"
+			>
+				<div class="flex items-center space-x-3 mb-10">
+					<i class="ph ph-student text-3xl text-blue-400"></i>
+					<h2 class="text-2xl font-bold">SI-Akademik</h2>
+				</div>
+				<nav>
+					<a
+						href="#dashboard"
+						class="nav-link flex items-center py-3 px-4 my-2 rounded-lg bg-blue-600 hover:bg-blue-700 transition-colors"
+						><i class="ph-fill ph-house mr-3 text-lg"></i
+						>Dashboard</a
+					>
+					<a
+						href="#mahasiswa"
+						class="nav-link flex items-center py-3 px-4 my-2 rounded-lg hover:bg-gray-700 transition-colors"
+						><i class="ph-fill ph-users mr-3 text-lg"></i
+						>Mahasiswa</a
+					>
+					<a
+						href="#dosen"
+						class="nav-link flex items-center py-3 px-4 my-2 rounded-lg hover:bg-gray-700 transition-colors"
+						><i
+							class="ph-fill ph-chalkboard-teacher mr-3 text-lg"
+						></i
+						>Dosen</a
+					>
+					<a
+						href="#matakuliah"
+						class="nav-link flex items-center py-3 px-4 my-2 rounded-lg hover:bg-gray-700 transition-colors"
+						><i class="ph-fill ph-book-open mr-3 text-lg"></i>Mata
+						Kuliah</a
+					>
+					<a
+						href="#nilai"
+						class="nav-link flex items-center py-3 px-4 my-2 rounded-lg hover:bg-gray-700 transition-colors"
+						><i class="ph-fill ph-exam mr-3 text-lg"></i>Nilai
+						Mahasiswa</a
+					>
+					<a
+						href="#login"
+						class="nav-link flex items-center py-3 px-4 my-2 rounded-lg hover:bg-gray-700 transition-colors"
+						><i class="ph-fill ph-sign-out mr-3 text-lg"></i
+						>Keluar</a
+					>
+				</nav>
+			</div>
 
-            <!-- Konten Utama -->
-            <div class="flex-1 flex flex-col overflow-hidden">
-                <header
-                    class="flex justify-between md:justify-end items-center p-4 bg-white border-b"
-                >
-                    <button
-                        id="menu-button"
-                        class="md:hidden text-gray-600 hover:text-gray-800"
-                    >
-                        <i class="ph ph-list text-2xl"></i>
-                    </button>
-                    <div class="flex items-center space-x-4">
-                        <span class="text-gray-600"
-                            >Selamat datang, Admin!</span
-                        >
-                        <img
-                            src="https://placehold.co/40x40/E2E8F0/4A5568?text=A"
-                            alt="Avatar"
-                            class="w-10 h-10 rounded-full"
-                        />
-                    </div>
-                </header>
+			<!-- Konten Utama -->
+			<div class="flex-1 flex flex-col overflow-hidden">
+				<header
+					id="header_navbar"
+					class="flex justify-between md:justify-end items-center p-4 bg-white border-b"
+				>
+					<button
+						id="menu-button"
+						class="md:hidden text-gray-600 hover:text-gray-800"
+					>
+						<i class="ph ph-list text-2xl"></i>
+					</button>
+					<div class="flex items-center space-x-4">
+						<span class="text-gray-600"
+							>Selamat datang, Admin!</span
+						>
+						<img
+							src="https://placehold.co/40x40/E2E8F0/4A5568?text=A"
+							alt="Avatar"
+							class="w-10 h-10 rounded-full"
+						/>
+					</div>
+				</header>
 
-                <main
-                    class="flex-1 overflow-x-hidden overflow-y-auto bg-gray-100 p-6"
-                >
-                    <!-- Halaman Dashboard -->
-                    <div id="dashboard" data-page>
-                        <h1 class="text-3xl font-bold text-gray-800 mb-6">
-                            Dashboard
-                        </h1>
-                        <div
-                            class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
-                        >
-                            <div
-                                class="bg-white p-6 rounded-xl shadow-md flex items-center space-x-4"
-                            >
-                                <div class="p-3 bg-blue-100 rounded-full">
-                                    <i
-                                        class="ph-bold ph-users text-3xl text-blue-600"
-                                    ></i>
-                                </div>
-                                <div>
-                                    <p class="text-gray-500">Total Mahasiswa</p>
-                                    <p
-                                        id="total-mahasiswa"
-                                        class="text-2xl font-bold text-gray-800"
-                                    >
-                                        0
-                                    </p>
-                                </div>
-                            </div>
-                            <div
-                                class="bg-white p-6 rounded-xl shadow-md flex items-center space-x-4"
-                            >
-                                <div class="p-3 bg-green-100 rounded-full">
-                                    <i
-                                        class="ph-bold ph-chalkboard-teacher text-3xl text-green-600"
-                                    ></i>
-                                </div>
-                                <div>
-                                    <p class="text-gray-500">Total Dosen</p>
-                                    <p
-                                        id="total-dosen"
-                                        class="text-2xl font-bold text-gray-800"
-                                    >
-                                        0
-                                    </p>
-                                </div>
-                            </div>
-                            <div
-                                class="bg-white p-6 rounded-xl shadow-md flex items-center space-x-4"
-                            >
-                                <div class="p-3 bg-yellow-100 rounded-full">
-                                    <i
-                                        class="ph-bold ph-book-open text-3xl text-yellow-600"
-                                    ></i>
-                                </div>
-                                <div>
-                                    <p class="text-gray-500">Mata Kuliah</p>
-                                    <p
-                                        id="total-matakuliah"
-                                        class="text-2xl font-bold text-gray-800"
-                                    >
-                                        0
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+				<main
+					class="flex-1 overflow-x-hidden overflow-y-auto bg-gray-100 p-6"
+				>
+					<!-- Halaman Dashboard -->
+					<div id="dashboard" data-page>
+						<h1 class="text-3xl font-bold text-gray-800 mb-6">
+							Dashboard
+						</h1>
+						<div
+							class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+						>
+							<div
+								class="bg-white p-6 rounded-xl shadow-md flex items-center space-x-4"
+							>
+								<div class="p-3 bg-blue-100 rounded-full">
+									<i
+										class="ph-bold ph-users text-3xl text-blue-600"
+									></i>
+								</div>
+								<div>
+									<p class="text-gray-500">Total Mahasiswa</p>
+									<p
+										id="total-mahasiswa"
+										class="text-2xl font-bold text-gray-800"
+									>
+										0
+									</p>
+								</div>
+							</div>
+							<div
+								class="bg-white p-6 rounded-xl shadow-md flex items-center space-x-4"
+							>
+								<div class="p-3 bg-green-100 rounded-full">
+									<i
+										class="ph-bold ph-chalkboard-teacher text-3xl text-green-600"
+									></i>
+								</div>
+								<div>
+									<p class="text-gray-500">Total Dosen</p>
+									<p
+										id="total-dosen"
+										class="text-2xl font-bold text-gray-800"
+									>
+										0
+									</p>
+								</div>
+							</div>
+							<div
+								class="bg-white p-6 rounded-xl shadow-md flex items-center space-x-4"
+							>
+								<div class="p-3 bg-yellow-100 rounded-full">
+									<i
+										class="ph-bold ph-book-open text-3xl text-yellow-600"
+									></i>
+								</div>
+								<div>
+									<p class="text-gray-500">Mata Kuliah</p>
+									<p
+										id="total-matakuliah"
+										class="text-2xl font-bold text-gray-800"
+									>
+										0
+									</p>
+								</div>
+							</div>
+						</div>
+					</div>
 
-                    <!-- Halaman Mahasiswa -->
-                    <div id="mahasiswa" data-page class="page-hidden">
-                        <div class="flex justify-between items-center mb-6">
-                            <h1 class="text-3xl font-bold text-gray-800">
-                                Daftar Mahasiswa
-                            </h1>
-                            <button
-                                data-action="create"
-                                data-table="mahasiswa"
-                                class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center"
-                            >
-                                <i class="ph-bold ph-plus mr-2"></i>Tambah
-                                Mahasiswa
-                            </button>
-                        </div>
-                        <div
-                            class="bg-white p-6 rounded-xl shadow-md overflow-x-auto"
-                        >
-                            <table class="w-full text-left">
-                                <thead class="bg-gray-50">
-                                    <tr>
-                                        <th
-                                            class="p-4 font-semibold text-gray-600"
-                                        >
-                                            NIM
-                                        </th>
-                                        <th
-                                            class="p-4 font-semibold text-gray-600"
-                                        >
-                                            Nama
-                                        </th>
-                                        <th
-                                            class="p-4 font-semibold text-gray-600"
-                                        >
-                                            Prodi
-                                        </th>
-                                        <th
-                                            class="p-4 font-semibold text-gray-600"
-                                        >
-                                            Angkatan
-                                        </th>
-                                        <th
-                                            class="p-4 font-semibold text-gray-600 text-center"
-                                        >
-                                            Aksi
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <tbody
-                                    id="tabel-mahasiswa"
-                                    class="divide-y"
-                                ></tbody>
-                            </table>
-                        </div>
-                    </div>
+					<!-- Halaman Mahasiswa -->
+					<div id="mahasiswa" data-page class="page-hidden">
+						<div class="flex justify-between items-center mb-6">
+							<h1 class="text-3xl font-bold text-gray-800">
+								Daftar Mahasiswa
+							</h1>
+							<button
+								data-action="create"
+								data-table="mahasiswa"
+								class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center"
+							>
+								<i class="ph-bold ph-plus mr-2"></i>Tambah
+								Mahasiswa
+							</button>
+						</div>
+						<div
+							class="bg-white p-6 rounded-xl shadow-md overflow-x-auto"
+						>
+							<table class="w-full text-left">
+								<thead class="bg-gray-50">
+									<tr>
+										<th
+											class="p-4 font-semibold text-gray-600"
+										>
+											NIM
+										</th>
+										<th
+											class="p-4 font-semibold text-gray-600"
+										>
+											Nama
+										</th>
+										<th
+											class="p-4 font-semibold text-gray-600"
+										>
+											Prodi
+										</th>
+										<th
+											class="p-4 font-semibold text-gray-600"
+										>
+											Angkatan
+										</th>
+										<th
+											class="p-4 font-semibold text-gray-600 text-center"
+										>
+											Aksi
+										</th>
+									</tr>
+								</thead>
+								<tbody
+									id="tabel-mahasiswa"
+									class="divide-y"
+								></tbody>
+							</table>
+						</div>
+					</div>
 
-                    <!-- Halaman Dosen -->
-                    <div id="dosen" data-page class="page-hidden">
-                        <div class="flex justify-between items-center mb-6">
-                            <h1 class="text-3xl font-bold text-gray-800">
-                                Daftar Dosen
-                            </h1>
-                            <button
-                                data-action="create"
-                                data-table="dosen"
-                                class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center"
-                            >
-                                <i class="ph-bold ph-plus mr-2"></i>Tambah Dosen
-                            </button>
-                        </div>
-                        <div
-                            class="bg-white p-6 rounded-xl shadow-md overflow-x-auto"
-                        >
-                            <table class="w-full text-left">
-                                <thead class="bg-gray-50">
-                                    <tr>
-                                        <th
-                                            class="p-4 font-semibold text-gray-600"
-                                        >
-                                            NIDN
-                                        </th>
-                                        <th
-                                            class="p-4 font-semibold text-gray-600"
-                                        >
-                                            Nama
-                                        </th>
-                                        <th
-                                            class="p-4 font-semibold text-gray-600"
-                                        >
-                                            Bidang Keahlian
-                                        </th>
-                                        <th
-                                            class="p-4 font-semibold text-gray-600"
-                                        >
-                                            Email
-                                        </th>
-                                        <th
-                                            class="p-4 font-semibold text-gray-600 text-center"
-                                        >
-                                            Aksi
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <tbody
-                                    id="tabel-dosen"
-                                    class="divide-y"
-                                ></tbody>
-                            </table>
-                        </div>
-                    </div>
+					<!-- Halaman Dosen -->
+					<div id="dosen" data-page class="page-hidden">
+						<div class="flex justify-between items-center mb-6">
+							<h1 class="text-3xl font-bold text-gray-800">
+								Daftar Dosen
+							</h1>
+							<button
+								data-action="create"
+								data-table="dosen"
+								class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center"
+							>
+								<i class="ph-bold ph-plus mr-2"></i>Tambah Dosen
+							</button>
+						</div>
+						<div
+							class="bg-white p-6 rounded-xl shadow-md overflow-x-auto"
+						>
+							<table class="w-full text-left">
+								<thead class="bg-gray-50">
+									<tr>
+										<th
+											class="p-4 font-semibold text-gray-600"
+										>
+											NIDN
+										</th>
+										<th
+											class="p-4 font-semibold text-gray-600"
+										>
+											Nama
+										</th>
+										<th
+											class="p-4 font-semibold text-gray-600"
+										>
+											Bidang Keahlian
+										</th>
+										<th
+											class="p-4 font-semibold text-gray-600"
+										>
+											Email
+										</th>
+										<th
+											class="p-4 font-semibold text-gray-600 text-center"
+										>
+											Aksi
+										</th>
+									</tr>
+								</thead>
+								<tbody
+									id="tabel-dosen"
+									class="divide-y"
+								></tbody>
+							</table>
+						</div>
+					</div>
 
-                    <!-- Halaman Mata Kuliah -->
-                    <div id="matakuliah" data-page class="page-hidden">
-                        <div class="flex justify-between items-center mb-6">
-                            <h1 class="text-3xl font-bold text-gray-800">
-                                Daftar Mata Kuliah
-                            </h1>
-                            <button
-                                data-action="create"
-                                data-table="matakuliah"
-                                class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center"
-                            >
-                                <i class="ph-bold ph-plus mr-2"></i>Tambah Mata
-                                Kuliah
-                            </button>
-                        </div>
-                        <div
-                            class="bg-white p-6 rounded-xl shadow-md overflow-x-auto"
-                        >
-                            <table class="w-full text-left">
-                                <thead class="bg-gray-50">
-                                    <tr>
-                                        <th
-                                            class="p-4 font-semibold text-gray-600"
-                                        >
-                                            Kode MK
-                                        </th>
-                                        <th
-                                            class="p-4 font-semibold text-gray-600"
-                                        >
-                                            Nama MK
-                                        </th>
-                                        <th
-                                            class="p-4 font-semibold text-gray-600"
-                                        >
-                                            SKS
-                                        </th>
-                                        <th
-                                            class="p-4 font-semibold text-gray-600"
-                                        >
-                                            Semester
-                                        </th>
-                                        <th
-                                            class="p-4 font-semibold text-gray-600 text-center"
-                                        >
-                                            Aksi
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <tbody
-                                    id="tabel-matakuliah"
-                                    class="divide-y"
-                                ></tbody>
-                            </table>
-                        </div>
-                    </div>
+					<!-- Halaman Mata Kuliah -->
+					<div id="matakuliah" data-page class="page-hidden">
+						<div class="flex justify-between items-center mb-6">
+							<h1 class="text-3xl font-bold text-gray-800">
+								Daftar Mata Kuliah
+							</h1>
+							<button
+								data-action="create"
+								data-table="matakuliah"
+								class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center"
+							>
+								<i class="ph-bold ph-plus mr-2"></i>Tambah Mata
+								Kuliah
+							</button>
+						</div>
+						<div
+							class="bg-white p-6 rounded-xl shadow-md overflow-x-auto"
+						>
+							<table class="w-full text-left">
+								<thead class="bg-gray-50">
+									<tr>
+										<th
+											class="p-4 font-semibold text-gray-600"
+										>
+											Kode MK
+										</th>
+										<th
+											class="p-4 font-semibold text-gray-600"
+										>
+											Nama MK
+										</th>
+										<th
+											class="p-4 font-semibold text-gray-600"
+										>
+											SKS
+										</th>
+										<th
+											class="p-4 font-semibold text-gray-600"
+										>
+											Semester
+										</th>
+										<th
+											class="p-4 font-semibold text-gray-600 text-center"
+										>
+											Aksi
+										</th>
+									</tr>
+								</thead>
+								<tbody
+									id="tabel-matakuliah"
+									class="divide-y"
+								></tbody>
+							</table>
+						</div>
+					</div>
 
-                    <!-- Halaman Nilai -->
-                    <div id="nilai" data-page class="page-hidden">
-                        <div class="flex justify-between items-center mb-6">
-                            <h1 class="text-3xl font-bold text-gray-800">
-                                Nilai Mahasiswa
-                            </h1>
-                            <button
-                                data-action="create"
-                                data-table="nilai"
-                                class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center"
-                            >
-                                <i class="ph-bold ph-plus mr-2"></i>Tambah Nilai
-                            </button>
-                        </div>
-                        <div
-                            class="bg-white p-6 rounded-xl shadow-md overflow-x-auto"
-                        >
-                            <table class="w-full text-left">
-                                <thead class="bg-gray-50">
-                                    <tr>
-                                        <th
-                                            class="p-4 font-semibold text-gray-600"
-                                        >
-                                            Nama Mahasiswa
-                                        </th>
-                                        <th
-                                            class="p-4 font-semibold text-gray-600"
-                                        >
-                                            Mata Kuliah
-                                        </th>
-                                        <th
-                                            class="p-4 font-semibold text-gray-600"
-                                        >
-                                            Nilai
-                                        </th>
-                                        <th
-                                            class="p-4 font-semibold text-gray-600 text-center"
-                                        >
-                                            Aksi
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <tbody
-                                    id="tabel-nilai"
-                                    class="divide-y"
-                                ></tbody>
-                            </table>
-                        </div>
-                    </div>
-                </main>
-            </div>
-            <div
-                id="overlay"
-                class="fixed inset-0 bg-black bg-opacity-50 z-20 hidden md:hidden"
-            ></div>
-        </div>
+					<!-- Halaman Nilai -->
+					<div id="nilai" data-page class="page-hidden">
+						<div class="flex justify-between items-center mb-6">
+							<h1 class="text-3xl font-bold text-gray-800">
+								Nilai Mahasiswa
+							</h1>
+							<button
+								data-action="create"
+								data-table="nilai"
+								class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center"
+							>
+								<i class="ph-bold ph-plus mr-2"></i>Tambah Nilai
+							</button>
+						</div>
+						<div
+							class="bg-white p-6 rounded-xl shadow-md overflow-x-auto"
+						>
+							<table class="w-full text-left">
+								<thead class="bg-gray-50">
+									<tr>
+										<th
+											class="p-4 font-semibold text-gray-600"
+										>
+											Nama Mahasiswa
+										</th>
+										<th
+											class="p-4 font-semibold text-gray-600"
+										>
+											Mata Kuliah
+										</th>
+										<th
+											class="p-4 font-semibold text-gray-600"
+										>
+											Nilai
+										</th>
+										<th
+											class="p-4 font-semibold text-gray-600 text-center"
+										>
+											Aksi
+										</th>
+									</tr>
+								</thead>
+								<tbody
+									id="tabel-nilai"
+									class="divide-y"
+								></tbody>
+							</table>
+						</div>
+					</div>
 
-        <!-- MODALS -->
-        <div
-            id="mahasiswa-modal"
-            class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-40 hidden"
-        >
-            <div
-                class="bg-white rounded-lg shadow-xl w-full max-w-md p-6 transform scale-95"
-            >
-                <h2 class="modal-title text-2xl font-bold mb-6 text-gray-800">
-                    Mahasiswa
-                </h2>
-                <form data-table="mahasiswa">
-                    <div class="mb-4">
-                        <label class="block text-gray-700 mb-1 font-medium"
-                            >NIM</label
-                        ><input
-                            type="text"
-                            name="nim"
-                            required
-                            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 read-only:bg-gray-100 read-only:cursor-not-allowed"
-                        />
-                    </div>
-                    <div class="mb-4">
-                        <label class="block text-gray-700 mb-1 font-medium"
-                            >Nama</label
-                        ><input
-                            type="text"
-                            name="nama"
-                            required
-                            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        />
-                    </div>
-                    <div class="mb-4">
-                        <label class="block text-gray-700 mb-1 font-medium"
-                            >Prodi</label
-                        ><input
-                            type="text"
-                            name="prodi"
-                            required
-                            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        />
-                    </div>
-                    <div class="mb-4">
-                        <label class="block text-gray-700 mb-1 font-medium"
-                            >Angkatan</label
-                        ><input
-                            type="number"
-                            name="angkatan"
-                            required
-                            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        />
-                    </div>
-                    <div class="flex justify-end space-x-3 mt-6">
-                        <button
-                            type="button"
-                            class="cancel-btn bg-gray-200 text-gray-800 px-4 py-2 rounded-lg hover:bg-gray-300 transition-colors"
-                        >
-                            Batal</button
-                        ><button
-                            type="submit"
-                            class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
-                        >
-                            Simpan
-                        </button>
-                    </div>
-                </form>
-            </div>
-        </div>
-        <div
-            id="dosen-modal"
-            class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-40 hidden"
-        >
-            <div
-                class="bg-white rounded-lg shadow-xl w-full max-w-md p-6 transform scale-95"
-            >
-                <h2 class="modal-title text-2xl font-bold mb-6 text-gray-800">
-                    Dosen
-                </h2>
-                <form data-table="dosen">
-                    <div class="mb-4">
-                        <label class="block text-gray-700 mb-1 font-medium"
-                            >NIDN</label
-                        ><input
-                            type="text"
-                            name="nidn"
-                            required
-                            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 read-only:bg-gray-100 read-only:cursor-not-allowed"
-                        />
-                    </div>
-                    <div class="mb-4">
-                        <label class="block text-gray-700 mb-1 font-medium"
-                            >Nama</label
-                        ><input
-                            type="text"
-                            name="nama"
-                            required
-                            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        />
-                    </div>
-                    <div class="mb-4">
-                        <label class="block text-gray-700 mb-1 font-medium"
-                            >Bidang Keahlian</label
-                        ><input
-                            type="text"
-                            name="bidang_keahlian"
-                            required
-                            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        />
-                    </div>
-                    <div class="mb-4">
-                        <label class="block text-gray-700 mb-1 font-medium"
-                            >Email</label
-                        ><input
-                            type="email"
-                            name="email"
-                            required
-                            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        />
-                    </div>
-                    <div class="flex justify-end space-x-3 mt-6">
-                        <button
-                            type="button"
-                            class="cancel-btn bg-gray-200 text-gray-800 px-4 py-2 rounded-lg hover:bg-gray-300 transition-colors"
-                        >
-                            Batal</button
-                        ><button
-                            type="submit"
-                            class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
-                        >
-                            Simpan
-                        </button>
-                    </div>
-                </form>
-            </div>
-        </div>
-        <div
-            id="matakuliah-modal"
-            class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-40 hidden"
-        >
-            <div
-                class="bg-white rounded-lg shadow-xl w-full max-w-md p-6 transform scale-95"
-            >
-                <h2 class="modal-title text-2xl font-bold mb-6 text-gray-800">
-                    Mata Kuliah
-                </h2>
-                <form data-table="matakuliah">
-                    <div class="mb-4">
-                        <label class="block text-gray-700 mb-1 font-medium"
-                            >Kode MK</label
-                        ><input
-                            type="text"
-                            name="kode_mk"
-                            required
-                            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 read-only:bg-gray-100 read-only:cursor-not-allowed"
-                        />
-                    </div>
-                    <div class="mb-4">
-                        <label class="block text-gray-700 mb-1 font-medium"
-                            >Nama MK</label
-                        ><input
-                            type="text"
-                            name="nama_mk"
-                            required
-                            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        />
-                    </div>
-                    <div class="mb-4">
-                        <label class="block text-gray-700 mb-1 font-medium"
-                            >SKS</label
-                        ><input
-                            type="number"
-                            name="sks"
-                            required
-                            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        />
-                    </div>
-                    <div class="mb-4">
-                        <label class="block text-gray-700 mb-1 font-medium"
-                            >Semester</label
-                        ><input
-                            type="number"
-                            name="semester"
-                            required
-                            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        />
-                    </div>
-                    <div class="flex justify-end space-x-3 mt-6">
-                        <button
-                            type="button"
-                            class="cancel-btn bg-gray-200 text-gray-800 px-4 py-2 rounded-lg hover:bg-gray-300 transition-colors"
-                        >
-                            Batal</button
-                        ><button
-                            type="submit"
-                            class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
-                        >
-                            Simpan
-                        </button>
-                    </div>
-                </form>
-            </div>
-        </div>
-        <div
-            id="nilai-modal"
-            class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-40 hidden"
-        >
-            <div
-                class="bg-white rounded-lg shadow-xl w-full max-w-md p-6 transform scale-95"
-            >
-                <h2 class="modal-title text-2xl font-bold mb-6 text-gray-800">
-                    Nilai
-                </h2>
-                <form data-table="nilai">
-                    <input type="hidden" name="id_nilai" />
-                    <div class="mb-4">
-                        <label class="block text-gray-700 mb-1 font-medium"
-                            >Mahasiswa</label
-                        ><select
-                            name="nim"
-                            required
-                            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        ></select>
-                    </div>
-                    <div class="mb-4">
-                        <label class="block text-gray-700 mb-1 font-medium"
-                            >Mata Kuliah</label
-                        ><select
-                            name="kode_mk"
-                            required
-                            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        ></select>
-                    </div>
-                    <div class="mb-4">
-                        <label class="block text-gray-700 mb-1 font-medium"
-                            >Nilai</label
-                        ><input
-                            type="number"
-                            step="0.01"
-                            name="nilai"
-                            required
-                            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        />
-                    </div>
-                    <div class="flex justify-end space-x-3 mt-6">
-                        <button
-                            type="button"
-                            class="cancel-btn bg-gray-200 text-gray-800 px-4 py-2 rounded-lg hover:bg-gray-300 transition-colors"
-                        >
-                            Batal</button
-                        ><button
-                            type="submit"
-                            class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
-                        >
-                            Simpan
-                        </button>
-                    </div>
-                </form>
-            </div>
-        </div>
+					<!-- Halaman Login -->
+					<div
+						id="login"
+						data-page
+						class="page-hidden justify-content-center flex flex-column align-items-center"
+					>
+						<form
+							action="post"
+							data-table="login"
+							class="w-100 mx-auto max-w-md mt-8"
+						>
+							<div class="mb-4">
+								<label
+									class="block text-gray-700 mb-1 font-medium"
+									>ID Admin</label
+								><input
+									type="text"
+									name="id_admin"
+									required
+									class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 read-only:bg-gray-100 read-only:cursor-not-allowed"
+								/>
+							</div>
+							<div class="mb-4">
+								<label
+									class="block text-gray-700 mb-1 font-medium"
+									>Password</label
+								><input
+									type="password"
+									name="password"
+									required
+									class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+								/>
+							</div>
 
-        <!-- Notifikasi/Toast -->
-        <div
-            id="toast"
-            class="fixed bottom-5 right-5 text-white px-5 py-3 rounded-lg shadow-lg transform translate-y-20 opacity-0 transition-all duration-300"
-        >
-            <p id="toast-message"></p>
-        </div>
+							<div class="flex justify-end space-x-3 mt-6">
+								<button
+									type="submit"
+									class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
+								>
+									Login
+								</button>
+							</div>
+						</form>
+					</div>
+				</main>
+			</div>
+			<div
+				id="overlay"
+				class="fixed inset-0 bg-black bg-opacity-50 z-20 hidden md:hidden"
+			></div>
+		</div>
 
-        <script>
-            document.addEventListener("DOMContentLoaded", function () {
-                const appData = {
-                    mahasiswa: [],
-                    dosen: [],
-                    matakuliah: [],
-                    nilai: []
-                };
-                const primaryKeys = {
-                    mahasiswa: "nim",
-                    dosen: "nidn",
-                    matakuliah: "kode_mk",
-                    nilai: "id_nilai"
-                };
+		<!-- MODALS -->
+		<div
+			id="mahasiswa-modal"
+			class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-40 hidden"
+		>
+			<div
+				class="bg-white rounded-lg shadow-xl w-full max-w-md p-6 transform scale-95"
+			>
+				<h2 class="modal-title text-2xl font-bold mb-6 text-gray-800">
+					Mahasiswa
+				</h2>
+				<form data-table="mahasiswa">
+					<div class="mb-4">
+						<label class="block text-gray-700 mb-1 font-medium"
+							>NIM</label
+						><input
+							type="text"
+							name="nim"
+							required
+							class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 read-only:bg-gray-100 read-only:cursor-not-allowed"
+						/>
+					</div>
+					<div class="mb-4">
+						<label class="block text-gray-700 mb-1 font-medium"
+							>Nama</label
+						><input
+							type="text"
+							name="nama"
+							required
+							class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+						/>
+					</div>
+					<div class="mb-4">
+						<label class="block text-gray-700 mb-1 font-medium"
+							>Prodi</label
+						><input
+							type="text"
+							name="prodi"
+							required
+							class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+						/>
+					</div>
+					<div class="mb-4">
+						<label class="block text-gray-700 mb-1 font-medium"
+							>Angkatan</label
+						><input
+							type="number"
+							name="angkatan"
+							required
+							class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+						/>
+					</div>
+					<div class="flex justify-end space-x-3 mt-6">
+						<button
+							type="button"
+							class="cancel-btn bg-gray-200 text-gray-800 px-4 py-2 rounded-lg hover:bg-gray-300 transition-colors"
+						>
+							Batal</button
+						><button
+							type="submit"
+							class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
+						>
+							Simpan
+						</button>
+					</div>
+				</form>
+			</div>
+		</div>
+		<div
+			id="dosen-modal"
+			class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-40 hidden"
+		>
+			<div
+				class="bg-white rounded-lg shadow-xl w-full max-w-md p-6 transform scale-95"
+			>
+				<h2 class="modal-title text-2xl font-bold mb-6 text-gray-800">
+					Dosen
+				</h2>
+				<form data-table="dosen">
+					<div class="mb-4">
+						<label class="block text-gray-700 mb-1 font-medium"
+							>NIDN</label
+						><input
+							type="text"
+							name="nidn"
+							required
+							class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 read-only:bg-gray-100 read-only:cursor-not-allowed"
+						/>
+					</div>
+					<div class="mb-4">
+						<label class="block text-gray-700 mb-1 font-medium"
+							>Nama</label
+						><input
+							type="text"
+							name="nama"
+							required
+							class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+						/>
+					</div>
+					<div class="mb-4">
+						<label class="block text-gray-700 mb-1 font-medium"
+							>Bidang Keahlian</label
+						><input
+							type="text"
+							name="bidang_keahlian"
+							required
+							class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+						/>
+					</div>
+					<div class="mb-4">
+						<label class="block text-gray-700 mb-1 font-medium"
+							>Email</label
+						><input
+							type="email"
+							name="email"
+							required
+							class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+						/>
+					</div>
+					<div class="flex justify-end space-x-3 mt-6">
+						<button
+							type="button"
+							class="cancel-btn bg-gray-200 text-gray-800 px-4 py-2 rounded-lg hover:bg-gray-300 transition-colors"
+						>
+							Batal</button
+						><button
+							type="submit"
+							class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
+						>
+							Simpan
+						</button>
+					</div>
+				</form>
+			</div>
+		</div>
+		<div
+			id="matakuliah-modal"
+			class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-40 hidden"
+		>
+			<div
+				class="bg-white rounded-lg shadow-xl w-full max-w-md p-6 transform scale-95"
+			>
+				<h2 class="modal-title text-2xl font-bold mb-6 text-gray-800">
+					Mata Kuliah
+				</h2>
+				<form data-table="matakuliah">
+					<div class="mb-4">
+						<label class="block text-gray-700 mb-1 font-medium"
+							>Kode MK</label
+						><input
+							type="text"
+							name="kode_mk"
+							required
+							class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 read-only:bg-gray-100 read-only:cursor-not-allowed"
+						/>
+					</div>
+					<div class="mb-4">
+						<label class="block text-gray-700 mb-1 font-medium"
+							>Nama MK</label
+						><input
+							type="text"
+							name="nama_mk"
+							required
+							class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+						/>
+					</div>
+					<div class="mb-4">
+						<label class="block text-gray-700 mb-1 font-medium"
+							>SKS</label
+						><input
+							type="number"
+							name="sks"
+							required
+							class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+						/>
+					</div>
+					<div class="mb-4">
+						<label class="block text-gray-700 mb-1 font-medium"
+							>Semester</label
+						><input
+							type="number"
+							name="semester"
+							required
+							class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+						/>
+					</div>
+					<div class="flex justify-end space-x-3 mt-6">
+						<button
+							type="button"
+							class="cancel-btn bg-gray-200 text-gray-800 px-4 py-2 rounded-lg hover:bg-gray-300 transition-colors"
+						>
+							Batal</button
+						><button
+							type="submit"
+							class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
+						>
+							Simpan
+						</button>
+					</div>
+				</form>
+			</div>
+		</div>
+		<div
+			id="nilai-modal"
+			class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-40 hidden"
+		>
+			<div
+				class="bg-white rounded-lg shadow-xl w-full max-w-md p-6 transform scale-95"
+			>
+				<h2 class="modal-title text-2xl font-bold mb-6 text-gray-800">
+					Nilai
+				</h2>
+				<form data-table="nilai">
+					<input type="hidden" name="id_nilai" />
+					<div class="mb-4">
+						<label class="block text-gray-700 mb-1 font-medium"
+							>Mahasiswa</label
+						><select
+							name="nim"
+							required
+							class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+						></select>
+					</div>
+					<div class="mb-4">
+						<label class="block text-gray-700 mb-1 font-medium"
+							>Mata Kuliah</label
+						><select
+							name="kode_mk"
+							required
+							class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+						></select>
+					</div>
+					<div class="mb-4">
+						<label class="block text-gray-700 mb-1 font-medium"
+							>Nilai</label
+						><input
+							type="number"
+							step="0.01"
+							name="nilai"
+							required
+							class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+						/>
+					</div>
+					<div class="flex justify-end space-x-3 mt-6">
+						<button
+							type="button"
+							class="cancel-btn bg-gray-200 text-gray-800 px-4 py-2 rounded-lg hover:bg-gray-300 transition-colors"
+						>
+							Batal</button
+						><button
+							type="submit"
+							class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
+						>
+							Simpan
+						</button>
+					</div>
+				</form>
+			</div>
+		</div>
 
-                // --- API & Notifikasi ---
-                async function apiRequest(method, endpoint, body = null) {
-                    const url = `./api.php${endpoint}`;
-                    const options = { method, headers: {} };
-                    if (body) {
-                        options.headers["Content-Type"] = "application/json";
-                        options.body = JSON.stringify(body);
-                    }
-                    try {
-                        const response = await fetch(url, options);
+		<!-- Notifikasi/Toast -->
+		<div
+			id="toast"
+			class="fixed bottom-5 right-5 text-white px-5 py-3 rounded-lg shadow-lg transform translate-y-20 opacity-0 transition-all duration-300"
+		>
+			<p id="toast-message"></p>
+		</div>
 
-                        const result = await response.text();
+		<script nonce>
+			document.addEventListener('DOMContentLoaded', function () {
+				const appData = {
+					mahasiswa: [],
+					dosen: [],
+					matakuliah: [],
+					nilai: [],
+				};
+				const primaryKeys = {
+					mahasiswa: 'nim',
+					dosen: 'nidn',
+					matakuliah: 'kode_mk',
+					nilai: 'id_nilai',
+				};
 
-                        if (!response.ok) {
-                            throw new Error(
-                                `HTTP error! status: ${response.status}`
-                            );
-                        }
-                        console.log(result);
-                        return JSON.parse(result);
-                    } catch (error) {
-                        console.error("API Request failed:", error);
+				// --- API & Notifikasi ---
+				async function apiRequest(method, endpoint, body = null) {
+					const url = `./api.php${endpoint}`;
+					const options = { method, headers: {} };
+					if (body) {
+						options.headers['Content-Type'] = 'application/json';
+						options.body = JSON.stringify(body);
+					}
+					try {
+						const response = await fetch(url, options);
 
-                        showToast("Koneksi ke server gagal.", false);
-                        return body
-                            ? { success: false, message: "Koneksi gagal" }
-                            : null;
-                    }
-                }
+						const result = await response.text();
 
-                function showToast(message, isSuccess = true) {
-                    const toast = document.getElementById("toast");
-                    document.getElementById("toast-message").textContent =
-                        message;
-                    toast.className = `fixed bottom-5 right-5 text-white px-5 py-3 rounded-lg shadow-lg transform transition-all duration-300 ${
-                        isSuccess ? "bg-green-600" : "bg-red-600"
-                    } translate-y-0 opacity-100`;
-                    setTimeout(() => {
-                        toast.className = toast.className.replace(
-                            "translate-y-0 opacity-100",
-                            "translate-y-20 opacity-0"
-                        );
-                    }, 3000);
-                }
+						if (!response.ok) {
+							throw new Error(
+								`HTTP error! status: ${response.status}`
+							);
+						}
+						console.log(result);
+						return JSON.parse(result);
+					} catch (error) {
+						console.error('API Request failed:', error);
 
-                // --- Logika Modal ---
-                function openModal(table, action, data = {}) {
-                    const modal = document.getElementById(`${table}-modal`);
-                    const form = modal.querySelector("form");
-                    const title = modal.querySelector(".modal-title");
-                    form.reset();
-                    form.dataset.action = action;
+						showToast('Koneksi ke server gagal.', false);
+						return body
+							? { success: false, message: 'Koneksi gagal' }
+							: null;
+					}
+				}
 
-                    const baseTitle = title.textContent.split(" ")[0];
-                    title.textContent =
-                        action === "create"
-                            ? `Tambah ${baseTitle}`
-                            : `Edit ${baseTitle}`;
+				function showToast(message, isSuccess = true) {
+					const toast = document.getElementById('toast');
+					document.getElementById('toast-message').textContent =
+						message;
+					toast.className = `fixed bottom-5 right-5 text-white px-5 py-3 rounded-lg shadow-lg transform transition-all duration-300 ${
+						isSuccess ? 'bg-green-600' : 'bg-red-600'
+					} translate-y-0 opacity-100`;
+					setTimeout(() => {
+						toast.className = toast.className.replace(
+							'translate-y-0 opacity-100',
+							'translate-y-20 opacity-0'
+						);
+					}, 3000);
+				}
 
-                    const pkField = form.querySelector(
-                        `[name="${primaryKeys[table]}"]`
-                    );
-                    if (pkField && pkField.type !== "hidden") {
-                        pkField.readOnly = action === "update";
-                    }
+				// --- Logika Modal ---
+				function openModal(table, action, data = {}) {
+					const modal = document.getElementById(`${table}-modal`);
+					const form = modal.querySelector('form');
+					const title = modal.querySelector('.modal-title');
+					form.reset();
+					form.dataset.action = action;
 
-                    if (action === "update") {
-                        Object.keys(data).forEach(key => {
-                            const input = form.querySelector(`[name="${key}"]`);
-                            if (input) input.value = data[key];
-                        });
-                    }
-                    modal.classList.remove("hidden");
-                }
+					const baseTitle = title.textContent.split(' ')[0];
+					title.textContent =
+						action === 'create'
+							? `Tambah ${baseTitle}`
+							: `Edit ${baseTitle}`;
 
-                function closeModal(modal) {
-                    modal.classList.add("hidden");
-                }
+					const pkField = form.querySelector(
+						`[name="${primaryKeys[table]}"]`
+					);
+					if (pkField && pkField.type !== 'hidden') {
+						pkField.readOnly = action === 'update';
+					}
 
-                // --- Render Functions ---
-                const renderRow = {
-                    mahasiswa: d =>
-                        `<tr class="hover:bg-gray-50"><td class="p-4">${d.nim}</td><td class="p-4 font-medium">${d.nama}</td><td class="p-4">${d.prodi}</td><td class="p-4">${d.angkatan}</td><td class="p-4 text-center"><button data-action="update" data-table="mahasiswa" data-key="${d.nim}" class="text-blue-600 p-1"><i class="ph-bold ph-pencil-simple"></i></button><button data-action="delete" data-table="mahasiswa" data-key="${d.nim}" class="text-red-600 p-1"><i class="ph-bold ph-trash"></i></button></td></tr>`,
-                    dosen: d =>
-                        `<tr class="hover:bg-gray-50"><td class="p-4">${d.nidn}</td><td class="p-4 font-medium">${d.nama}</td><td class="p-4">${d.bidang_keahlian}</td><td class="p-4">${d.email}</td><td class="p-4 text-center"><button data-action="update" data-table="dosen" data-key="${d.nidn}" class="text-blue-600 p-1"><i class="ph-bold ph-pencil-simple"></i></button><button data-action="delete" data-table="dosen" data-key="${d.nidn}" class="text-red-600 p-1"><i class="ph-bold ph-trash"></i></button></td></tr>`,
-                    matakuliah: d =>
-                        `<tr class="hover:bg-gray-50"><td class="p-4">${d.kode_mk}</td><td class="p-4 font-medium">${d.nama_mk}</td><td class="p-4">${d.sks}</td><td class="p-4">${d.semester}</td><td class="p-4 text-center"><button data-action="update" data-table="matakuliah" data-key="${d.kode_mk}" class="text-blue-600 p-1"><i class="ph-bold ph-pencil-simple"></i></button><button data-action="delete" data-table="matakuliah" data-key="${d.kode_mk}" class="text-red-600 p-1"><i class="ph-bold ph-trash"></i></button></td></tr>`,
-                    nilai: d =>
-                        `<tr class="hover:bg-gray-50"><td class="p-4 font-medium">${d.nama_mahasiswa}</td><td class="p-4">${d.nama_mk}</td><td class="p-4 font-bold">${d.nilai}</td><td class="p-4 text-center"><button data-action="update" data-table="nilai" data-key="${d.id_nilai}" class="text-blue-600 p-1"><i class="ph-bold ph-pencil-simple"></i></button><button data-action="delete" data-table="nilai" data-key="${d.id_nilai}" class="text-red-600 p-1"><i class="ph-bold ph-trash"></i></button></td></tr>`
-                };
+					if (action === 'update') {
+						Object.keys(data).forEach((key) => {
+							const input = form.querySelector(`[name="${key}"]`);
+							if (input) input.value = data[key];
+						});
+					}
+					modal.classList.remove('hidden');
+				}
 
-                function displayAllTables() {
-                    for (const table in appData) {
-                        const tbody = document.getElementById(`tabel-${table}`);
-                        if (!tbody) continue;
+				function closeModal(modal) {
+					modal.classList.add('hidden');
+				}
 
-                        const data = appData[table];
-                        const renderer = renderRow[table];
-                        const colCount =
-                            tbody.parentElement.querySelector(
-                                "thead th"
-                            ).length;
+				// --- Render Functions ---
+				const renderRow = {
+					mahasiswa: (d) =>
+						`<tr class="hover:bg-gray-50"><td class="p-4">${d.nim}</td><td class="p-4 font-medium">${d.nama}</td><td class="p-4">${d.prodi}</td><td class="p-4">${d.angkatan}</td><td class="p-4 text-center"><button data-action="update" data-table="mahasiswa" data-key="${d.nim}" class="text-blue-600 p-1"><i class="ph-bold ph-pencil-simple"></i></button><button data-action="delete" data-table="mahasiswa" data-key="${d.nim}" class="text-red-600 p-1"><i class="ph-bold ph-trash"></i></button></td></tr>`,
+					dosen: (d) =>
+						`<tr class="hover:bg-gray-50"><td class="p-4">${d.nidn}</td><td class="p-4 font-medium">${d.nama}</td><td class="p-4">${d.bidang_keahlian}</td><td class="p-4">${d.email}</td><td class="p-4 text-center"><button data-action="update" data-table="dosen" data-key="${d.nidn}" class="text-blue-600 p-1"><i class="ph-bold ph-pencil-simple"></i></button><button data-action="delete" data-table="dosen" data-key="${d.nidn}" class="text-red-600 p-1"><i class="ph-bold ph-trash"></i></button></td></tr>`,
+					matakuliah: (d) =>
+						`<tr class="hover:bg-gray-50"><td class="p-4">${d.kode_mk}</td><td class="p-4 font-medium">${d.nama_mk}</td><td class="p-4">${d.sks}</td><td class="p-4">${d.semester}</td><td class="p-4 text-center"><button data-action="update" data-table="matakuliah" data-key="${d.kode_mk}" class="text-blue-600 p-1"><i class="ph-bold ph-pencil-simple"></i></button><button data-action="delete" data-table="matakuliah" data-key="${d.kode_mk}" class="text-red-600 p-1"><i class="ph-bold ph-trash"></i></button></td></tr>`,
+					nilai: (d) =>
+						`<tr class="hover:bg-gray-50"><td class="p-4 font-medium">${d.nama_mahasiswa}</td><td class="p-4">${d.nama_mk}</td><td class="p-4 font-bold">${d.nilai}</td><td class="p-4 text-center"><button data-action="update" data-table="nilai" data-key="${d.id_nilai}" class="text-blue-600 p-1"><i class="ph-bold ph-pencil-simple"></i></button><button data-action="delete" data-table="nilai" data-key="${d.id_nilai}" class="text-red-600 p-1"><i class="ph-bold ph-trash"></i></button></td></tr>`,
+				};
 
-                        tbody.innerHTML = "";
-                        if (data && data.length > 0) {
-                            data.forEach(item => {
-                                tbody.innerHTML += renderer(item);
-                            });
-                        } else {
-                            tbody.innerHTML = `<tr><td colspan="${colCount}" class="p-4 text-center text-gray-500">${
-                                data ? "Tidak ada data." : "Gagal memuat data."
-                            }</td></tr>`;
-                        }
-                    }
-                }
+				function displayAllTables() {
+					for (const table in appData) {
+						const tbody = document.getElementById(`tabel-${table}`);
+						if (!tbody) continue;
 
-                // --- Muat Data & Update UI ---
-                async function loadAllData() {
-                    const [mahasiswa, dosen, matakuliah, nilai] =
-                        await Promise.all([
-                            apiRequest("GET", "?get=mahasiswa"),
-                            apiRequest("GET", "?get=dosen"),
-                            apiRequest("GET", "?get=matakuliah"),
-                            apiRequest("GET", "?get=nilai")
-                        ]);
+						const data = appData[table];
+						const renderer = renderRow[table];
+						const colCount =
+							tbody.parentElement.querySelector(
+								'thead th'
+							).length;
 
-                    appData.mahasiswa = mahasiswa || [];
-                    appData.dosen = dosen || [];
-                    appData.matakuliah = matakuliah || [];
-                    appData.nilai = nilai || [];
+						tbody.innerHTML = '';
+						if (data && data.length > 0) {
+							data.forEach((item) => {
+								tbody.innerHTML += renderer(item);
+							});
+						} else {
+							tbody.innerHTML = `<tr><td colspan="${colCount}" class="p-4 text-center text-gray-500">${
+								data ? 'Tidak ada data.' : 'Gagal memuat data.'
+							}</td></tr>`;
+						}
+					}
+				}
 
-                    displayAllTables();
-                    updateDashboard();
-                    populateNilaiForm();
-                }
+				// --- Muat Data & Update UI ---
+				async function loadAllData() {
+					const [mahasiswa, dosen, matakuliah, nilai] =
+						await Promise.all([
+							apiRequest('GET', '?get=mahasiswa'),
+							apiRequest('GET', '?get=dosen'),
+							apiRequest('GET', '?get=matakuliah'),
+							apiRequest('GET', '?get=nilai'),
+						]);
 
-                function updateDashboard() {
-                    document.getElementById("total-mahasiswa").textContent =
-                        appData.mahasiswa.length;
-                    document.getElementById("total-dosen").textContent =
-                        appData.dosen.length;
-                    document.getElementById("total-matakuliah").textContent =
-                        appData.matakuliah.length;
-                }
+					appData.mahasiswa = mahasiswa || [];
+					appData.dosen = dosen || [];
+					appData.matakuliah = matakuliah || [];
+					appData.nilai = nilai || [];
 
-                function populateNilaiForm() {
-                    const mhsSelect = document.querySelector(
-                        '#nilai-modal [name="nim"]'
-                    );
-                    const mkSelect = document.querySelector(
-                        '#nilai-modal [name="kode_mk"]'
-                    );
-                    mhsSelect.innerHTML = appData.mahasiswa
-                        .map(m => `<option value="${m.nim}">${m.nama}</option>`)
-                        .join("");
-                    mkSelect.innerHTML = appData.matakuliah
-                        .map(
-                            mk =>
-                                `<option value="${mk.kode_mk}">${mk.nama_mk}</option>`
-                        )
-                        .join("");
-                }
+					displayAllTables();
+					updateDashboard();
+					populateNilaiForm();
+				}
 
-                // --- Event Delegation ---
-                document.body.addEventListener("click", async e => {
-                    const button = e.target.closest("button");
-                    if (!button) return;
+				function updateDashboard() {
+					document.getElementById('total-mahasiswa').textContent =
+						appData.mahasiswa.length;
+					document.getElementById('total-dosen').textContent =
+						appData.dosen.length;
+					document.getElementById('total-matakuliah').textContent =
+						appData.matakuliah.length;
+				}
 
-                    const { action, table, key } = button.dataset;
+				function populateNilaiForm() {
+					const mhsSelect = document.querySelector(
+						'#nilai-modal [name="nim"]'
+					);
+					const mkSelect = document.querySelector(
+						'#nilai-modal [name="kode_mk"]'
+					);
+					mhsSelect.innerHTML = appData.mahasiswa
+						.map(
+							(m) => `<option value="${m.nim}">${m.nama}</option>`
+						)
+						.join('');
+					mkSelect.innerHTML = appData.matakuliah
+						.map(
+							(mk) =>
+								`<option value="${mk.kode_mk}">${mk.nama_mk}</option>`
+						)
+						.join('');
+				}
 
-                    if (action === "create" || action === "update") {
-                        let data = {};
-                        if (action === "update") {
-                            const keyName = primaryKeys[table];
-                            data = appData[table].find(
-                                item => item[keyName] == key
-                            );
-                        }
-                        openModal(table, action, data);
-                    } else if (action === "delete") {
-                        if (
-                            confirm(
-                                "Apakah Anda yakin ingin menghapus data ini?"
-                            )
-                        ) {
-                            const result = await apiRequest("POST", "", {
-                                table,
-                                action,
-                                key
-                            });
-                            showToast(result.message, result.success);
-                            if (result.success) loadAllData();
-                        }
-                    } else if (button.classList.contains("cancel-btn")) {
-                        closeModal(button.closest(".fixed"));
-                    }
-                });
+				// --- Event Delegation ---
+				document.body.addEventListener('click', async (e) => {
+					const button = e.target.closest('button');
+					if (!button) return;
 
-                document.querySelectorAll("form").forEach(form => {
-                    form.addEventListener("submit", async e => {
-                        e.preventDefault();
-                        const { table, action } = form.dataset;
-                        const formData = new FormData(form);
-                        const payload = {
-                            table,
-                            action,
-                            ...Object.fromEntries(formData.entries())
-                        };
+					const { action, table, key } = button.dataset;
 
-                        const result = await apiRequest("POST", "", payload);
-                        showToast(result.message, result.success);
-                        if (result.success) {
-                            closeModal(form.closest(".fixed"));
-                            loadAllData();
-                        }
-                    });
-                });
+					if (action === 'create' || action === 'update') {
+						let data = {};
+						if (action === 'update') {
+							const keyName = primaryKeys[table];
+							data = appData[table].find(
+								(item) => item[keyName] == key
+							);
+						}
+						openModal(table, action, data);
+					} else if (action === 'delete') {
+						if (
+							confirm(
+								'Apakah Anda yakin ingin menghapus data ini?'
+							)
+						) {
+							const result = await apiRequest('POST', '', {
+								table,
+								action,
+								key,
+							});
+							showToast(result.message, result.success);
+							if (result.success) loadAllData();
+						}
+					} else if (button.classList.contains('cancel-btn')) {
+						closeModal(button.closest('.fixed'));
+					}
+				});
 
-                // --- Navigasi & Sidebar ---
-                function switchPage(hash) {
-                    const targetId = hash ? hash.substring(1) : "dashboard";
-                    document
-                        .querySelectorAll("[data-page]")
-                        .forEach(p =>
-                            p.classList.toggle("page-hidden", p.id !== targetId)
-                        );
-                    document.querySelectorAll(".nav-link").forEach(link => {
-                        link.classList.toggle(
-                            "bg-blue-600",
-                            link.getAttribute("href") === (hash || "#dashboard")
-                        );
-                    });
-                    if (window.innerWidth < 768) toggleSidebar(true);
-                }
+				document.querySelectorAll('form').forEach((form) => {
+					form.addEventListener('submit', async (e) => {
+						e.preventDefault();
+						const { table, action } = form.dataset;
+						console.log(form.dataset);
+						const formData = new FormData(form);
+						const payload = {
+							table,
+							action,
+							...Object.fromEntries(formData.entries()),
+						};
 
-                function toggleSidebar(forceClose = false) {
-                    const sidebar = document.getElementById("sidebar");
-                    const overlay = document.getElementById("overlay");
-                    const isHidden =
-                        sidebar.classList.contains("-translate-x-full");
-                    if (forceClose || !isHidden) {
-                        sidebar.classList.add("-translate-x-full");
-                        overlay.classList.add("hidden");
-                    } else {
-                        sidebar.classList.remove("-translate-x-full");
-                        overlay.classList.remove("hidden");
-                    }
-                }
+						const result = await apiRequest('POST', '', payload);
+						showToast(result.message, result.success);
+						if (result.success) {
+							closeModal(form.closest('.fixed'));
+							loadAllData();
+						}
+					});
+				});
 
-                // --- Inisialisasi ---
-                loadAllData();
-                switchPage(window.location.hash);
+				// --- Navigasi & Sidebar ---
+				function switchPage(hash) {
+					const targetId = hash ? hash.substring(1) : 'dashboard';
+					console.log(targetId);
+					if (targetId === 'login') {
+						sidebar.classList.add('hidden');
+						header_navbar.classList.add('hidden');
+					} else {
+						sidebar.classList.remove('hidden');
+						header_navbar.classList.remove('hidden');
+					}
+					document
+						.querySelectorAll('[data-page]')
+						.forEach((p) =>
+							p.classList.toggle('page-hidden', p.id !== targetId)
+						);
+					document.querySelectorAll('.nav-link').forEach((link) => {
+						link.classList.toggle(
+							'bg-blue-600',
+							link.getAttribute('href') === (hash || '#dashboard')
+						);
+					});
+					if (window.innerWidth < 768) toggleSidebar(true);
+				}
 
-                window.addEventListener("hashchange", () =>
-                    switchPage(window.location.hash)
-                );
-                document
-                    .getElementById("menu-button")
-                    .addEventListener("click", () => toggleSidebar());
-                document
-                    .getElementById("overlay")
-                    .addEventListener("click", () => toggleSidebar());
-            });
-        </script>
-    </body>
+				function toggleSidebar(forceClose = false) {
+					const sidebar = document.getElementById('sidebar');
+					const overlay = document.getElementById('overlay');
+					const isHidden =
+						sidebar.classList.contains('-translate-x-full');
+					if (forceClose || !isHidden) {
+						sidebar.classList.add('-translate-x-full');
+						overlay.classList.add('hidden');
+					} else {
+						sidebar.classList.remove('-translate-x-full');
+						overlay.classList.remove('hidden');
+					}
+				}
+
+				// --- Inisialisasi ---
+				loadAllData();
+				switchPage(window.location.hash);
+
+				window.addEventListener('hashchange', () =>
+					switchPage(window.location.hash)
+				);
+				document
+					.getElementById('menu-button')
+					.addEventListener('click', () => toggleSidebar());
+				document
+					.getElementById('overlay')
+					.addEventListener('click', () => toggleSidebar());
+			});
+		</script>
+	</body>
 </html>
